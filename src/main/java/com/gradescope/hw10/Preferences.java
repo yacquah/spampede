@@ -10,6 +10,15 @@ import java.awt.Font;
  * @author HMC CS 60 Instructors
  * @version Fall 2025
  */
+
+
+/**
+ * Stores constant configuration values used throughout the Spampede game.
+ * <p>
+ * These values control the size of cells, the board dimensions, the positions
+ * of UI elements, and timing parameters for game updates.
+ * This class contains only constants and is not meant to be instantiated.
+ */
 public final class Preferences {
   /**
    * Initializes this class. This constructor is private since this class only
@@ -43,7 +52,7 @@ public final class Preferences {
   /** The number of cells tall in the game board. */
   public static final int NUM_CELLS_TALL = 30;
 
-  /** The size of the individual board cells. */
+  /** The size of the individual board cells(in pixels). */
   public static final int CELL_SIZE = 10;
 
   /** The space to leave for the buttons. */
@@ -94,7 +103,7 @@ public final class Preferences {
   public static final Color TITLE_COLOR = Color.BLUE;
   
   /** The title text. */
-  public static final String TITLE = "Add Title for Part 1"; // TODO HW #10.1A Update title
+  public static final String TITLE = "Spampede"; 
 
   /* ------------------------ */
   /* Text display - Game Over */

@@ -20,11 +20,23 @@ import javax.swing.SwingUtilities;
  * @author HMC CS 60 Instructors
  * @version Fall 2025
  */
+
+
+
+/**
+ *  The SpampedeController manages all game interactions, including responding
+ * to keyboard input and controlling the main game loop.
+ * <p>
+ * This class serves as the "controller" in the Model–View–Controller (MVC)
+ * architecture. It updates the model, triggers view updates, and manages the
+ * game's timer-based progression.
+ */
 public class SpampedeController extends JPanel implements ActionListener, KeyListener, Runnable {
-  /** The "view" in MVC. */
+  
+  /** The "view" responsible for rendering the game */
   private SpampedeView view;
 
-  /** The "model" in MVC. */
+  /** The "model" in MVC responsible for storing game state. */
   public SpampedeModel model;
 
   /** The sound for spam. */
@@ -96,7 +108,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   }
 
   /**
-   * Constructor for the controller
+   * Constructs a new controller for managing gameplay
    */
   public SpampedeController() {
     // Loading audio using the helper function loadClip

@@ -68,32 +68,51 @@ public class BoardCell {
     return this.column;
   }
 
-  /** {@return true if this cell is a wall} */
+  /** Returns {@code true} if this cell is a wall
+   * 
+   * @return {@code true} if this cell is a wall 
+   */
   public boolean isWall() {
     return this.type == CellType.WALL;
   }
 
-  /** {@return true if this cell is open (not a wall or a snake body part)} */
+  /** Returns {@code true} if this cell is open.
+   * More formally if the cell is not a wall or its a part of the snake body
+   * 
+   * @return true if this cell is open (not a wall or a snake body part) 
+   */
   public boolean isOpen() {
     return this.type == CellType.OPEN || this.isSpam();
   }
 
-  /** {@return true if this cell contains spam} */
+  /** Returns {@code true} if this cell contains a spam
+   * 
+   *  @return true if this cell contains spam
+   */
   public boolean isSpam() {
     return this.type == CellType.SPAM;
   }
 
-  /** {@return true if this cell contains a snake body part (not the head)} */
+  /** Returns {@cdoe true} if this cell contains a snake body part (not the head) 
+   * 
+   * @return true if this cell contains a snake body part (not the head) 
+   */
   public boolean isBody() {
     return this.type == CellType.BODY;
   }
 
-  /** {@return true if this cell contains the head of the snake} */
+  /** Returns {@code true} if the cell contains the head of the snake
+   *  
+   * @return true if this cell contains the head of the snake
+   */
   public boolean isHead() {
     return this.type == CellType.HEAD;
   }
 
-  /** {@return the color for drawing this cell} */
+  /** Returns the color of this cell
+   *  
+   * @return the color for drawing this cell
+   */
   public Color getCellColor() {
     if (this.isWall()) {
       return Preferences.COLOR_WALL;
@@ -143,8 +162,10 @@ public class BoardCell {
     this.addedToSearch = true;
   }
 
-  /**
-   * {@return {@code true} if this cell has been added to our BFS search queue}
+  /** 
+   * Returns {@code true} if this cell has been added to our BFS search queue
+   * 
+   * @return {@code true} if this cell has been added to our BFS search queue
    */
   public boolean alreadySearched() {
     return this.addedToSearch;
@@ -165,7 +186,11 @@ public class BoardCell {
     this.parent = parent;
   }
 
-  /** {@return the parent of this cell in our BFS search} */
+  /** 
+   * Returns the parent of this cell in our BFS search
+   * 
+   * {@return the parent of this cell in our BFS search} 
+   */
   public BoardCell getParent() {
     return this.parent;
   }
@@ -174,7 +199,10 @@ public class BoardCell {
   /* Helper functions for testing */
   /* ---------------------------- */
 
-  /** {@return this cell as a string "[row, col, type]"} */
+  /**
+   * Returns a string represenation of this cell
+   *  
+   * @return this cell as a string "[row, col, type]" */
   @Override
   public String toString() {
     return "[" + this.row + ", " + this.column + ", " + this.toStringType() + "]";

@@ -22,6 +22,15 @@ import javax.swing.JPanel;
  * @author HMC CS 60 Instructors
  * @version Fall 2025
  */
+
+
+/**
+ * Handles all rendering and visual output for the Spampede game.
+ * <p>
+ * This class is responsible for drawing the board, title, spam image,
+ * game-over message, and UI buttons. It does not contain game logic —
+ * all state is retrieved from the {@link SpampedeModel}.
+ */
 class SpampedeView {
   /** The board/spampede data being drawn. */
   private SpampedeModel model;
@@ -32,13 +41,11 @@ class SpampedeView {
   /** The display where the board is drawn. */
   private final Graphics screen;
 
-  // TODO HW #10.0C Add final where appropriate to members below!
-
   /** The width of the display in pixels. */
-  private int width;
+  private final int width;
 
   /** The height of the display in pixels. */
-  private int height;
+  private final int height;
 
   /** The overall game window */
   private JFrame frame;
@@ -53,7 +60,7 @@ class SpampedeView {
   private static Image imageSpam;
 
   /**
-   * Creates a new SpampedeView.
+   * Creates a new View for rendering the Spampede game
    *
    * @param controller the model controller
    * @param model      the model data
@@ -67,7 +74,7 @@ class SpampedeView {
     this.width = width;
 
     // Initialize the frame
-    this.frame = new JFrame("Spampedies Game"); // TODO HW #10.1A Update title
+    this.frame = new JFrame("Spampede Game"); // TODO HW #10.1A Update title
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.frame.setLayout(new BorderLayout());
 
@@ -160,8 +167,12 @@ class SpampedeView {
     }
   }
 
-  // TODO HW #10.0C Add missing Javadoc!
 
+  /**
+   * Updates the game model (all the data for the board including graphics)
+   * 
+   * @param model the model data
+   */
   public void updateModel(SpampedeModel model) {
     this.model = model;
     this.updateGraphics();
@@ -193,11 +204,27 @@ class SpampedeView {
     // xPos += 10 * i;
     // }
 
-    // TODO HW #10.1B and #10.1C Update updateGraphics
+    
     // Draw the board
-    // The method drawSquare (below) will likely be helpful :)
+    final int numRows = this.model.getNumRows();
+    final int numCols = this.model.getNumColumns();
+    final int cellSize = Preferences.CELL_SIZE;
 
-    // Display an image, just for fun
+    // Center the board horizontally and put it below the title
+    final int leftOffset = (this.width - numCols * cellSize) / 2;
+    final int topOffset = Preferences.TITLE_Y + 20;
+
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        Color cellColor = this.model.getCellColor(row, col);
+        int x = leftOffset + col * cellSize;   // column → x
+        int y = topOffset + row * cellSize;    // row    → y
+        this.drawSquare(x, y, cellColor);
+      }
+    }
+    
+
+    // Display an image(below board), just for fun
     if (SpampedeView.imageSpam != null) {
       int x = (this.width / 2) - 54;
       int y = 370;

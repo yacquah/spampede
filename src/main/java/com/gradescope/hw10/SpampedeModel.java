@@ -14,6 +14,18 @@ import java.util.Queue;
  * @see SpampedeController
  * @see SpampedeView
  */
+
+
+
+/**
+ * The SpampedeModel stores all game state information, including the board,
+ * snake position, spam location, movement direction, and game-over condition.
+ * <p>
+ * This class contains all of the logic necessary for updating the game's
+ * state, such as moving the snake, detecting collisions, placing spam, and
+ * computing BFS distances. It does not perform any rendering; all drawing is
+ * handled by the {@link SpampedeView}.
+ */
 class SpampedeModel {
   /**
    * The model needs to call the controller to play sounds and to end the game.
