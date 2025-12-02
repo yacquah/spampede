@@ -153,18 +153,29 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   @Override
   public void keyPressed(KeyEvent evt) {
     switch (evt.getKeyChar()) { // get the char of the pressed key
-    case REVERSE:
-      this.model.reverseSnake();
-      break;
-
-    // TODO HW #10.2A Update keyPressed
-
-    case AI_MODE:
-      this.model.setAIMode();
-      break;
-    case PLAY_SPAM_NOISE:
-      this.playSound_spam();
-      break;
+        case REVERSE:
+        this.model.reverseSnake();
+        break;
+        case AI_MODE:
+            this.model.setAIMode();
+            break;
+        case PLAY_SPAM_NOISE:
+            this.playSound_spam();
+            break;
+        case UP:
+            this.model.setDirectionNorth();
+            break;
+        case DOWN:
+            this.model.setDirectionSouth();
+            break;
+        case LEFT:
+            this.model.setDirectionWest();
+            break;
+        case RIGHT:
+            this.model.setDirectionEast();
+            break;
+        default:
+            break;
     }
   }
 
