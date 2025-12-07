@@ -3,6 +3,7 @@ package com.gradescope.hw10;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Collections;
 
 /**
  * The "model" in MVC that is responsible for storing all the data for the
@@ -658,9 +659,46 @@ class SpampedeModel {
 
   /**
    * Reverses the snake.
+   * Tail becomes the new head, and direction is updated solely on 
+   * new head and new new body
    */
   public void reverseSnake() {
-    // TODO HW #10.2B Implement reverseSnake
+    
+    // Snake must be long enough to reverse
+    if (this.snakeCells.size() < 2){
+        return;
+    }
+    
+    // reverse the linkedlist of Cells
+    Collections.reverse(this.snakeCells);
+
+    // Update all cell types
+    for (BoardCell cell : this.snakeCells){
+        cell.becomeBody();
+    }
+    BoardCell newHead = this.snakeCells.getLast();   // head is last
+    BoardCell newBody = this.snakeCells.get(this.snakeCells.size()-2);
+
+    newHead.becomeHead();
+
+    // Compute new direction from head to neck
+    int headRow = newHead.getRow();
+    int headColumn = newHead.getColumn();
+    int bodyRow = newBody.getRow();
+    int bodyColumn = newBody.getColumn();
+
+    int dirRow = headRow - bodyRow;
+    int dirColumn = headColumn - bodyColumn;
+
+    if (dirRow == -1 && dirColumn == 0){
+        this.currentMode = SnakeMode.GOING_NORTH;
+    } else if (dirRow== 1 && dirColumn == 0){
+        this.currentMode =SnakeMode.GOING_SOUTH;
+    } else if (dirRow == 0 && dirColumn == 1){
+        this.currentMode =SnakeMode.GOING_EAST;
+    } else if (dirRow == 0 && dirColumn == -1){
+        this.currentMode = SnakeMode.GOING_WEST;
+    }
   }
 
   /* ------------------------------------- */
@@ -697,7 +735,33 @@ class SpampedeModel {
     snakeHead.addToSearch();
     cellsToSearch.add(snakeHead);
 
-    // TODO HW #10.2B Update getNextCellFromBFS
+    // BFS search loop
+    while (!cellsToSearch.isEmpty()) {
+        BoardCell current = cellsToSearch.remove();
+
+        // If current cell is spam, trace back to find the next move
+        if (current.isSpam()) {
+            return getFirstCellInPath(current);
+        }
+
+        // Get neighbors in required order: North, South, East, West
+        BoardCell[] neighbors = this.getNeighbors(current);
+
+        for (BoardCell nbr : neighbors) {
+
+            // Skip walls and snake body (not open)
+            if (!nbr.isOpen() && !nbr.isSpam()) {
+                continue;
+            }
+
+            // Only add if not already in queue
+            if (!nbr.alreadySearched()) {
+                nbr.addToSearch();
+                nbr.setParent(current);
+                cellsToSearch.add(nbr);
+            }
+        }
+    }
 
     // if the search fails, just move somewhere
     return this.getRandomNeighboringCell(snakeHead);
@@ -715,9 +779,21 @@ class SpampedeModel {
    *         head
    */
   private BoardCell getFirstCellInPath(BoardCell start) {
-    // TODO HW #10.2B Implement getFirstCellInPath
-    return null; // replace with the desired BoardCell
-  }
+    BoardCell current = start;
+
+    // If BFS returned the head itself (unlikely but safe guard)
+    if (current.getParent() == null) {
+        return current;
+    }
+
+    // Walk back until the parent is the head
+    while (current.getParent() != null && !current.getParent().isHead()) {
+        current = current.getParent();
+    }
+
+    return current; // This is the neighbor to move into
+}
+  
 
   /* --------------------------------------------------------------------- */
   /* Testing infrastructure - You do not need to understand these methods! */
