@@ -84,12 +84,16 @@ Typical structure:
 │   └── Preferences.java
 └── README.md
 
+---
+
 ## How to Run
 
 ### Run from VS Code (recommended)
 1. Open the project folder in VS Code.
 2. Open the file that contains the `public static void main(String[] args)` method (often `TestGame.java` or another course-provided launcher).
 3. Click **Run** (top-right) or right-click the file and choose **Run Java**.
+
+---
 
 ## Spampede Quick Start(How to Play)
 
@@ -115,3 +119,5 @@ Tips:
   - Use Reverse to quickly escape dead-ends.
   - Toggle AI mode to let BFS choose a safe shortest path to Spam.
   - If you crash immediately, make sure you’re not steering into a wall on the first move.
+
+---
