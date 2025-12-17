@@ -7,13 +7,12 @@ A Java implementation of **Spampede** (Snake-style gameplay) built with a clean 
 ## Table of Contents
 - [Features](#features)
 - [Architecture](#architecture)
+- [How to Run](#how-to-run)
+- [How to Play](#how-to-play)
+- [Controls](#controls)
 - [AI Mode](#ai-mode)
 - [Rendering](#rendering)
 - [Project Structure](#project-structure)
-- [Controls](#controls)
-- [How to Run](#how-to-run)
-- [Testing](#testing)
-- [Notes on Style & Design](#notes-on-style--design)
 
 ---
 
@@ -85,3 +84,34 @@ Typical structure:
 │   └── Preferences.java
 └── README.md
 
+## How to Run
+
+### Run from VS Code (recommended)
+1. Open the project folder in VS Code.
+2. Open the file that contains the `public static void main(String[] args)` method (often `TestGame.java` or another course-provided launcher).
+3. Click **Run** (top-right) or right-click the file and choose **Run Java**.
+
+## Spampede Quick Start(How to Play)
+
+Goal:
+  - Eat Spam to score/grow (depending on your starter rules).
+  - Avoid losing by colliding with obstacles (walls / body), per the rule set.
+
+Start:
+  1) Launch the game using the "How to Run" steps.
+  2) A window opens showing the board grid.
+
+Gameplay Loop:
+  - The snake moves one cell per game tick (cycle).
+  - You can change direction using the movement keys.
+  - Eating Spam places the snake onto the Spam cell and triggers a game update
+    (e.g., growth/spawn next spam) as implemented in the model.
+
+Tips:
+  - Key Binings
+    -i, j, k, l — move (up/left/down/right)
+    -r — reverse
+    -s — say “Spam”
+  - Use Reverse to quickly escape dead-ends.
+  - Toggle AI mode to let BFS choose a safe shortest path to Spam.
+  - If you crash immediately, make sure you’re not steering into a wall on the first move.
