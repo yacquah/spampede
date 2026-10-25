@@ -5,12 +5,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -38,12 +36,6 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
 
   /** The "model" in MVC responsible for storing game state. */
   public SpampedeModel model;
-
-  /** The sound for spam. */
-  public AudioInputStream audioSpam;
-  
-  /** The sound when the snake eats spam. */
-  public AudioInputStream audioCrunch;
 
   /* --------------------------------------------------------------- */
   /* Fields and methods are used to implement the Runnable interface */
@@ -83,38 +75,9 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   private static final char PLAY_SPAM_NOISE = 's';
 
   /**
-   * Helper function for loading audio clips.
-   * 
-   * @param path the file path to load
-   * @return {@code null} if unable to load clip
-   */
-  private AudioInputStream loadClip(String path) {
-    try {
-      File audioFile = new File(path).getAbsoluteFile();
-      return AudioSystem.getAudioInputStream(audioFile);
-    } catch (NullPointerException e) {
-      System.out.println("Problem loading audio " + path + " : file is null");
-    } catch (UnsupportedAudioFileException e) {
-      System.out.println("Problem loading audio " + path
-          + " : this audio file data is not recognized/supported; it may need to be reencoded");
-    } catch (IOException e) {
-      System.out.println(
-          "Problem loading audio " + path + " : an IOException has occured; check the file name and path!");
-    } catch (Exception e) {
-      System.out.println("Unknown problem loading audio from " + path);
-    }
-
-    return null;
-  }
-
-  /**
    * Constructs a new controller for managing gameplay
    */
   public SpampedeController() {
-    // Loading audio using the helper function loadClip
-    this.audioSpam = this.loadClip("media/spam.wav");
-    this.audioCrunch = this.loadClip("media/crunch.wav");
-
     // Initialize the view and start the game
     this.view = new SpampedeView(this, null, Preferences.BOARD_WIDTH, 600);
     this.startNewGame(); // Set up the game internals!
@@ -263,7 +226,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
     }
 
     this.view.updateGraphics();
-    this.playSound(this.audioSpam);
+    this.playSound_spam();
   }
 
   /** Declares the game over. */
@@ -285,23 +248,6 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   /** Plays spam noise. */
   public void playSound_spam() {
     this.playSound("media/spam.wav");
-  }
-
-  /**
-   * Places a sound from the given input stream.
-   * 
-   * @param sound the input stream for the sound
-   */
-  public void playSound(AudioInputStream sound) {
-    if (sound != null) {
-      try {
-        Clip clip = AudioSystem.getClip();
-        clip.open(sound);
-        clip.start();
-      } catch (Exception e) {
-        System.out.println("Problem playing sound " + sound);
-      }
-    }
   }
 
   /**
