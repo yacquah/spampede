@@ -216,9 +216,13 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   }
 
   /**
-   * Called when the "Start" button is pressed.
+   * Called when the "Start" button is pressed. Does nothing once the game is
+   * over; only "New Game" can restart it.
    */
   public synchronized void go() {
+    if (this.model.getGameOver()) {
+      return;
+    }
     if (this.thread == null) {
       this.thread = new Thread(this);
       this.running = true;
