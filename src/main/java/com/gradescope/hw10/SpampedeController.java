@@ -9,6 +9,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -266,9 +267,15 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
     }
 
     if (sound != null) {
-      try {
+      try (AudioInputStream stream = sound) {
         Clip clip = AudioSystem.getClip();
-        clip.open(sound);
+        // Free the audio line (and its thread) once the sound has finished
+        clip.addLineListener(event -> {
+          if (event.getType() == LineEvent.Type.STOP) {
+            clip.close();
+          }
+        });
+        clip.open(stream); // loads the whole sound, so the file can be closed
         clip.start();
       } catch (Exception e) {
         System.out.println("Problem playing sound " + filename);
