@@ -113,9 +113,14 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
    * keyboard. So, whenever the user presses a key, Java automatically calls this
    * keyPressed method and passes it a KeyEvent describing the specific key press.
    * </p>
+   *
+   * <p>
+   * Runs on Swing's event thread, so it takes the controller's lock to avoid
+   * changing the snake while the game thread is in the middle of a cycle.
+   * </p>
    */
   @Override
-  public void keyPressed(KeyEvent evt) {
+  public synchronized void keyPressed(KeyEvent evt) {
     switch (evt.getKeyChar()) { // get the char of the pressed key
         case REVERSE:
         this.model.reverseSnake();
@@ -155,6 +160,13 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
 
   /**
    * Called to run this applet.
+   *
+   * <p>
+   * Each cycle runs while holding this controller's lock, the same lock taken by
+   * {@link #keyPressed}, {@link #startNewGame}, {@link #go}, {@link #pause} and
+   * {@link #gameOver}, so the game state is never changed by two threads at
+   * once. The lock is not held while sleeping between cycles or while paused.
+   * </p>
    */
   @Override
   public void run() {
@@ -162,19 +174,16 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
     // milliseconds)
     while (this.running) {
       try {
-        if (this.thread != null) {
-          Thread.sleep(Preferences.SLEEP_TIME);
-          synchronized (this) {
-            while (this.threadSuspended) {
-              this.wait(); // sleeps until notify() wakes it up
-            }
+        Thread.sleep(Preferences.SLEEP_TIME); // sleep without holding the lock
+        synchronized (this) {
+          while (this.threadSuspended) {
+            this.wait(); // releases the lock until notify() wakes it up
           }
+          this.model.cycle(); // one update cycle, with key presses locked out
         }
       } catch (InterruptedException e) {
         ;
       }
-
-      this.model.cycle(); // this represents 1 update cycle for the environment
     }
     this.thread = null;
   }
@@ -201,18 +210,23 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   /**
    * Called when the "Pause" button is pressed.
    */
-  void pause() {
+  synchronized void pause() {
     if (this.thread != null)
       this.threadSuspended = true;
   }
 
-  /** Starts a new game. */
+  /**
+   * Starts a new game. The model is swapped and drawn under the controller's
+   * lock, so a cycle of the old game can never finish against the new one.
+   */
   public void startNewGame() {
-    this.model = new SpampedeModel(this, this.view);
-    this.model.placeSnakeAtStartLocation();
-    this.model.setStartDirection();
+    synchronized (this) {
+      this.model = new SpampedeModel(this, this.view);
+      this.model.placeSnakeAtStartLocation();
+      this.model.setStartDirection();
 
-    this.view.updateModel(this.model);
+      this.view.updateModel(this.model);
+    }
 
     /**
      * Hack because pictures have a delay in loading, and we do not redraw the
@@ -226,12 +240,14 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
       Thread.currentThread().interrupt();
     }
 
-    this.view.updateGraphics();
+    synchronized (this) {
+      this.view.updateGraphics();
+    }
     this.playSound_spam();
   }
 
   /** Declares the game over. */
-  public void gameOver() {
+  public synchronized void gameOver() {
     if (this.thread != null)
       this.threadSuspended = true;
     this.model.setGameOver(); // tell the model that the game is over
