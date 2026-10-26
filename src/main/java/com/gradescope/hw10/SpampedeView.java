@@ -45,16 +45,16 @@ class SpampedeView {
   private final int height;
 
   /** The overall game window */
-  private JFrame frame;
+  private final JFrame frame;
 
   /** The off-screen buffer of image */
-  private BufferedImage image;
+  private final BufferedImage image;
 
   /** The panel to display the image */
-  SpampedeImagePanel panel;
+  private final SpampedeImagePanel panel;
 
   /** A picture of a can of spam. */
-  private static Image imageSpam;
+  private Image imageSpam;
 
   /**
    * Creates a new View for rendering the Spampede game
@@ -110,15 +110,16 @@ class SpampedeView {
     JButton pauseButton = new JButton("Pause"); // a second button
     pauseButton.addActionListener(this.controller);
     pauseButton.setActionCommand("Pause");
-    pauseButton.addKeyListener(this.controller); // unclear why Java likes listener here but doesn't work with it
-                                                 // on other buttons
+    // Key presses go to whichever component has keyboard focus. New Game is not
+    // focusable, so the focusable Pause and Start buttons carry the key listener.
+    pauseButton.addKeyListener(this.controller);
     buttonPane.add(pauseButton);
 
     JButton startButton = new JButton("Start"); // a third button
     startButton.addActionListener(this.controller);
     startButton.setActionCommand("Start");
 
-    startButton.addKeyListener(this.controller); // something needs a KeyListener
+    startButton.addKeyListener(this.controller); // see the note on the Pause button
     buttonPane.add(startButton);
     this.frame.add(buttonPane);
   }
@@ -156,10 +157,10 @@ class SpampedeView {
   private void initializeImage() {
     try {
       File spamFile = new File("media/spam.gif").getAbsoluteFile();
-      imageSpam = new ImageIcon(spamFile.toString()).getImage();
+      this.imageSpam = new ImageIcon(spamFile.toString()).getImage();
     } catch (Exception e) {
       System.out.println("Problem loading image media/spam.gif!");
-      imageSpam = null;
+      this.imageSpam = null;
     }
   }
 
@@ -208,10 +209,10 @@ class SpampedeView {
     
 
     // Display an image(below board), just for fun
-    if (SpampedeView.imageSpam != null) {
+    if (this.imageSpam != null) {
       int x = (this.width / 2) - 54;
       int y = 370;
-      this.screen.drawImage(SpampedeView.imageSpam, x, y, null);
+      this.screen.drawImage(this.imageSpam, x, y, null);
     }
 
     // Draw the game-over message, if appropriate

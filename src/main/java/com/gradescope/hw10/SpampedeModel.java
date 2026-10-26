@@ -58,13 +58,13 @@ class SpampedeModel {
    * A list of (references to) cells that currently contain spam, ordered from
    * oldest (first) to youngest (last).
    */
-  private LinkedList<BoardCell> spamCells;
+  private final LinkedList<BoardCell> spamCells;
 
   /**
    * A list of (references to) the cells that contain the snake. The head is the
    * last element of the list.
    */
-  private LinkedList<BoardCell> snakeCells;
+  private final LinkedList<BoardCell> snakeCells;
 
   /** Whether the game is over. */
   private boolean gameOver;
@@ -446,14 +446,6 @@ class SpampedeModel {
     return this.snakeCells.peekFirst();
   }
 
-  /**
-   * {@return the cell contains the snake body adjacent to the head}
-   */
-  private BoardCell getSnakeNeck() {
-    int lastSnakeCellIndex = this.snakeCells.size() - 1;
-    return this.snakeCells.get(lastSnakeCellIndex - 1);
-  }
-
   /* ------------------------------------------ */
   /* Methods to set the snake's (movement) mode */
   /* ------------------------------------------ */
@@ -740,8 +732,8 @@ class SpampedeModel {
 
         for (BoardCell nbr : neighbors) {
 
-            // Skip walls and snake body (not open)
-            if (!nbr.isOpen() && !nbr.isSpam()) {
+            // Skip walls and the snake (isOpen is true for empty and spam cells)
+            if (!nbr.isOpen()) {
                 continue;
             }
 
@@ -772,12 +764,7 @@ class SpampedeModel {
   private BoardCell getFirstCellInPath(BoardCell start) {
     BoardCell current = start;
 
-    // If BFS returned the head itself (unlikely but safe guard)
-    if (current.getParent() == null) {
-        return current;
-    }
-
-    // Walk back until the parent is the head
+    // Walk back until the parent is the head (a cell with no parent is returned as is)
     while (current.getParent() != null && !current.getParent().isHead()) {
         current = current.getParent();
     }

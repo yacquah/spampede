@@ -28,10 +28,10 @@ import javax.swing.SwingUtilities;
 public class SpampedeController extends JPanel implements ActionListener, KeyListener, Runnable {
   
   /** The "view" responsible for rendering the game */
-  private SpampedeView view;
+  private final SpampedeView view;
 
   /** The "model" in MVC responsible for storing game state. */
-  public SpampedeModel model;
+  private SpampedeModel model;
 
   /* --------------------------------------------------------------- */
   /* Fields and methods are used to implement the Runnable interface */
@@ -39,13 +39,13 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   /* --------------------------------------------------------------- */
 
   /** The thread controlling the updates. */
-  Thread thread;
+  private Thread thread;
 
   /** Tracks whether or not the thread is suspended. */
-  boolean threadSuspended;
+  private boolean threadSuspended;
 
   /** Tracks whether or not the thread is stopped. */
-  boolean running;
+  private boolean running;
 
   // The mappings between direction (names) and keys.
 
@@ -97,7 +97,6 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
       this.go();
       break;
     }
-    this.requestFocus(); // makes sure this applet keeps keyboard focus
   }
 
   /**
@@ -177,7 +176,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
           this.model.cycle(); // one update cycle, with key presses locked out
         }
       } catch (InterruptedException e) {
-        ;
+        // interrupted while sleeping or paused; go around the loop again
       }
     }
     this.thread = null;

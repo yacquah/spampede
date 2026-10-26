@@ -13,7 +13,7 @@ enum TestGame {
   G9(true), G10(true), G11(true), G12(false), G13(false), G14(false), G15(false);
 
   /** Indicates whether the snake is at the starting location. */
-  private boolean snakeAtStart;
+  private final boolean snakeAtStart;
 
   /**
    * Initializes a new game board.
