@@ -14,7 +14,7 @@ import javax.swing.JPanel;
  */
 public class SpampedeImagePanel extends JPanel {
   /** The image that this panel draws */
-  private Image image;
+  private final Image image;
 
   /**
    * Constructs a new image panel.
@@ -36,6 +36,10 @@ public class SpampedeImagePanel extends JPanel {
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
-    g.drawImage(this.image, 0, 0, this);
+    // Hold the image's lock so a frame being copied in by the game thread is
+    // never painted half-finished (see SpampedeView.updateGraphics)
+    synchronized (this.image) {
+      g.drawImage(this.image, 0, 0, this);
+    }
   }
 }

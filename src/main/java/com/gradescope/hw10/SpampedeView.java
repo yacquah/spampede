@@ -47,8 +47,14 @@ class SpampedeView {
   /** The overall game window */
   private final JFrame frame;
 
-  /** The off-screen buffer of image */
+  /** The off-screen image each new frame is drawn into (the back buffer). */
+  private final BufferedImage backImage;
+
+  /** The finished frame the window shows (the front buffer). */
   private final BufferedImage image;
+
+  /** Graphics for the front buffer, used only to copy in finished frames. */
+  private final Graphics frontGraphics;
 
   /** The panel to display the image */
   private final SpampedeImagePanel panel;
@@ -80,9 +86,12 @@ class SpampedeView {
     this.initializeMenu();
     this.initializeImage();
 
-    // Set up the (off-screen) buffer for drawing, named image
+    // Set up double buffering: each frame is drawn into backImage, then copied
+    // into image (the one the panel shows) in a single locked step
+    this.backImage = new BufferedImage(Preferences.BOARD_WIDTH, Preferences.BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
+    this.screen = this.backImage.getGraphics(); // screen holds the drawing routines
     this.image = new BufferedImage(Preferences.BOARD_WIDTH, Preferences.BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
-    this.screen = this.image.getGraphics(); // screen holds the drawing routines
+    this.frontGraphics = this.image.getGraphics();
     this.panel = new SpampedeImagePanel(this.image);
 
     // Add a central panel which holds the buffer (the game board)
@@ -218,6 +227,14 @@ class SpampedeView {
     // Draw the game-over message, if appropriate
     if (this.model.getGameOver()) {
       this.displayGameOver();
+    }
+
+    // Copy the finished frame into the image the window shows. The panel paints
+    // while holding the same lock, so it never shows a half-drawn frame. Locks
+    // are always taken controller first, then image, and the panel never takes
+    // the controller's lock, so this cannot deadlock.
+    synchronized (this.image) {
+      this.frontGraphics.drawImage(this.backImage, 0, 0, null);
     }
 
     // send the new drawing to the screen
