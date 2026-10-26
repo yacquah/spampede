@@ -32,7 +32,7 @@ public class BoardCell {
   /** Has this cell been added to the search queue yet? */
   private boolean addedToSearch;
 
-  /** Where did we came from, when search first reached this BoardCell? */
+  /** Where did we come from, when search first reached this BoardCell? */
   private BoardCell parent;
 
   /**
@@ -76,10 +76,11 @@ public class BoardCell {
     return this.type == CellType.WALL;
   }
 
-  /** Returns {@code true} if this cell is open.
-   * More formally if the cell is not a wall or its a part of the snake body
-   * 
-   * @return true if this cell is open (not a wall or a snake body part) 
+  /**
+   * Returns {@code true} if this cell is open: empty or holding spam, so the
+   * snake can move into it.
+   *
+   * @return true if this cell is empty or holds spam
    */
   public boolean isOpen() {
     return this.type == CellType.OPEN || this.isSpam();
@@ -93,7 +94,7 @@ public class BoardCell {
     return this.type == CellType.SPAM;
   }
 
-  /** Returns {@cdoe true} if this cell contains a snake body part (not the head) 
+  /** Returns {@code true} if this cell contains a snake body part (not the head) 
    * 
    * @return true if this cell contains a snake body part (not the head) 
    */
@@ -186,11 +187,7 @@ public class BoardCell {
     this.parent = parent;
   }
 
-  /** 
-   * Returns the parent of this cell in our BFS search
-   * 
-   * {@return the parent of this cell in our BFS search} 
-   */
+  /** {@return the parent of this cell in our BFS search} */
   public BoardCell getParent() {
     return this.parent;
   }
@@ -200,7 +197,7 @@ public class BoardCell {
   /* ---------------------------- */
 
   /**
-   * Returns a string represenation of this cell
+   * Returns a string representation of this cell
    *  
    * @return this cell as a string "[row, col, type]" */
   @Override

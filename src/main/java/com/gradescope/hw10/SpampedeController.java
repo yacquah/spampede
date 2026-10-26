@@ -14,21 +14,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
- * SpampedeController
- * 
- * @author HMC CS 60 Instructors
- * @version Fall 2025
- */
-
-
-
-/**
- *  The SpampedeController manages all game interactions, including responding
+ * The SpampedeController manages all game interactions, including responding
  * to keyboard input and controlling the main game loop.
  * <p>
  * This class serves as the "controller" in the Model–View–Controller (MVC)
  * architecture. It updates the model, triggers view updates, and manages the
  * game's timer-based progression.
+ * </p>
+ *
+ * @author HMC CS 60 Instructors
+ * @version Fall 2025
  */
 public class SpampedeController extends JPanel implements ActionListener, KeyListener, Runnable {
   
@@ -109,7 +104,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
    * Reacts to characters typed by the user.
    * 
    * <p>
-   * SpampedeCibtrikker registers as an "observer" for key presses on the
+   * SpampedeController registers as an "observer" for key presses on the
    * keyboard. So, whenever the user presses a key, Java automatically calls this
    * keyPressed method and passes it a KeyEvent describing the specific key press.
    * </p>
@@ -268,7 +263,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   }
 
   /**
-   * Places a sound from the given file name.
+   * Plays a sound from the given file name.
    * 
    * @param filename the file name of the sound to play
    */

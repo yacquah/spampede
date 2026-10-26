@@ -6,26 +6,20 @@ import java.util.Queue;
 import java.util.Collections;
 
 /**
- * The "model" in MVC that is responsible for storing all the data for the
- * board.
- * 
+ * The "model" in MVC: stores all game state, including the board, snake
+ * position, spam locations, movement direction, and game-over condition.
+ * <p>
+ * This class contains all of the logic for updating the game's state, such as
+ * moving the snake, detecting collisions, placing spam, and running the BFS
+ * search. It does not perform any rendering; all drawing is handled by the
+ * {@link SpampedeView}.
+ * </p>
+ *
  * @author HMC CS 60 Instructors
  * @version Fall 2025
- * 
+ *
  * @see SpampedeController
  * @see SpampedeView
- */
-
-
-
-/**
- * The SpampedeModel stores all game state information, including the board,
- * snake position, spam location, movement direction, and game-over condition.
- * <p>
- * This class contains all of the logic necessary for updating the game's
- * state, such as moving the snake, detecting collisions, placing spam, and
- * computing BFS distances. It does not perform any rendering; all drawing is
- * handled by the {@link SpampedeView}.
  */
 class SpampedeModel {
   /**
@@ -518,8 +512,10 @@ class SpampedeModel {
 
   /**
    * Returns the cell north of the specified cell, which must not be on the boundary.
-   * 
-   * @param cell the specified cell in the board */
+   *
+   * @param cell the specified cell in the board
+   * @return the cell north of {@code cell}
+   */
   protected BoardCell getNorthNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
@@ -528,18 +524,22 @@ class SpampedeModel {
 
   /**
    * Returns the cell south of the specified cell, which must not be on the boundary.
-   * 
-   * @param cell the specified cell in the board  */ 
+   *
+   * @param cell the specified cell in the board
+   * @return the cell south of {@code cell}
+   */
   protected BoardCell getSouthNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
     return this.getCell(row+1, col);
   }
 
-  /** 
+  /**
    * Returns the cell east of the specified cell, which must not be on the boundary.
-   * 
-   * @param cell the specified cell in the board */ 
+   *
+   * @param cell the specified cell in the board
+   * @return the cell east of {@code cell}
+   */
   protected BoardCell getEastNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
@@ -548,8 +548,10 @@ class SpampedeModel {
 
   /**
    * Returns the cell west of the specified cell, which must not be on the boundary.
-   * 
-   * @param cell the specified cell in the board */ 
+   *
+   * @param cell the specified cell in the board
+   * @return the cell west of {@code cell}
+   */
   protected BoardCell getWestNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
@@ -575,7 +577,7 @@ class SpampedeModel {
         case GOING_WEST:
             return this.getWestNeighbor();
         default:
-            // Should never happen (AI mode uses BFS), but for safety retun the head
+            // Should never happen (AI mode uses BFS), but for safety return the head
             return this.getSnakeHead();
     }
   }
@@ -648,9 +650,8 @@ class SpampedeModel {
   /* ---------------------------- */
 
   /**
-   * Reverses the snake.
-   * Tail becomes the new head, and direction is updated solely on 
-   * new head and new new body
+   * Reverses the snake: the tail becomes the new head, and the new direction is
+   * computed from the new head and the cell right behind it.
    */
   public void reverseSnake() {
     
@@ -671,7 +672,7 @@ class SpampedeModel {
 
     newHead.becomeHead();
 
-    // Compute new direction from head to neck
+    // Compute the new direction: from the neck to the head
     int headRow = newHead.getRow();
     int headColumn = newHead.getColumn();
     int bodyRow = newBody.getRow();

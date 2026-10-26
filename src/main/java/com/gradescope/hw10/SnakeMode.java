@@ -25,7 +25,7 @@ enum SnakeMode {
   GOING_WEST,
 
   /**
-   * Indicates the snake is automonously heading towards spam in a direction
+   * Indicates the snake is autonomously heading towards spam in a direction
    * determined by the AI.
    */
   AI_MODE;

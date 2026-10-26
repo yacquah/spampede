@@ -29,7 +29,7 @@ enum CellType {
   /** Indicates this cell contains spam. */
   SPAM("X"),
 
-  /** Indicates this cell in inhabited by the snake's head. */
+  /** Indicates this cell is inhabited by the snake's head. */
   HEAD("H"),
 
   /** Indicates this cell is inhabited by the snake's body. */

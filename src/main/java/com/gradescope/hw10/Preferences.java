@@ -4,20 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- * Represents settings for Spampede. Constants are stored in this file to avoid
- * "magic strings" and "magic numbers" and allow greater configurability.
- * 
- * @author HMC CS 60 Instructors
- * @version Fall 2025
- */
-
-
-/**
  * Stores constant configuration values used throughout the Spampede game.
+ * Keeping them in one place avoids "magic strings" and "magic numbers" and
+ * allows greater configurability.
  * <p>
  * These values control the size of cells, the board dimensions, the positions
- * of UI elements, and timing parameters for game updates.
- * This class contains only constants and is not meant to be instantiated.
+ * of UI elements, and timing parameters for game updates. This class contains
+ * only constants and is not meant to be instantiated.
+ * </p>
+ *
+ * @author HMC CS 60 Instructors
+ * @version Fall 2025
  */
 public final class Preferences {
   /**
@@ -39,7 +36,7 @@ public final class Preferences {
   /** The rate to add spam to the board. */
   public static final int SPAM_ADD_RATE = 25;
 
-  /** The time in milliseonds to wait between updates. */
+  /** The time in milliseconds to wait between updates. */
   public static final int SLEEP_TIME = 30;
 
   /* ------ */
@@ -109,7 +106,7 @@ public final class Preferences {
   /* Text display - Game Over */
   /* ------------------------ */
 
-  /** The game over message y position. */
+  /** The game over message x position. */
   public static final int GAME_OVER_X = 150;
 
   /** The game over message y position. */

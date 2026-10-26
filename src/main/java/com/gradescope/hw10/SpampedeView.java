@@ -17,19 +17,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
- * The "view" in MVC that is responsible for drawing the board on the screen.
- * 
- * @author HMC CS 60 Instructors
- * @version Fall 2025
- */
-
-
-/**
- * Handles all rendering and visual output for the Spampede game.
+ * The "view" in MVC: handles all rendering and visual output for the Spampede
+ * game.
  * <p>
  * This class is responsible for drawing the board, title, spam image,
  * game-over message, and UI buttons. It does not contain game logic —
  * all state is retrieved from the {@link SpampedeModel}.
+ * </p>
+ *
+ * @author HMC CS 60 Instructors
+ * @version Fall 2025
  */
 class SpampedeView {
   /** The board/spampede data being drawn. */
