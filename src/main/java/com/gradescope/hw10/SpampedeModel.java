@@ -43,16 +43,13 @@ class SpampedeModel {
    * by row and column.
    * 
    * <p>
-   * All {@link BoardCell} objects needed by the program are created by the
-   * {@link SpampedeModel} constructor, so you do not need to create any new
-   * {@link BoardCell} objects in your code. Instead, you will pass around
-   * (references to) existing cells, and change the contents of some of these
-   * cells.
+   * Every {@link BoardCell} the game uses is created once, by the
+   * {@link SpampedeModel} constructor. The rest of the code never creates new
+   * cells; it passes around (references to) these cells and changes their
+   * contents.
    * </p>
    */
   private final BoardCell[][] boardCells2D;
-
-  // TODO HW #10.0C Add final where appropriate to members below!
 
   /** The number of non-wall cells in the initial board. */
   private int freeSpots;
@@ -243,7 +240,6 @@ class SpampedeModel {
    *                 the snake head)
    */
   private void advanceTheSnake(BoardCell nextCell) {
-    // Note - do not modify provided code.
     if (nextCell.isWall() || nextCell.isBody()) {
       // Oops...we hit something.
       this.controller.gameOver();
@@ -273,7 +269,6 @@ class SpampedeModel {
     }
   }
 
-  // ---- REMOVE BEG ----
   /**
    * Updates the head of the snake.
    * 
@@ -295,7 +290,6 @@ class SpampedeModel {
     tail.becomeOpen();
     this.snakeCells.removeFirst();
   }
-  // ---- REMOVE END ----
 
   /**
    * Adds more spam every SPAM_ADD_RATE cycles.
@@ -337,9 +331,7 @@ class SpampedeModel {
    * Accesses a cell at a particular location.
    * 
    * <p>
-   * This method should really be private. We make it public to allow our unit
-   * tests to use it, but it should not be called from SpampedeController or
-   * SpampedeView.
+   * Visible for testing; not intended for use by the controller or view.
    * </p>
    * 
    * @param row the row to access, between 0 and numRows-1 inclusive
@@ -431,8 +423,7 @@ class SpampedeModel {
    * Removes the oldest piece of un-eaten spam.
    * 
    * <p>
-   * The function is not used in the given code, but it might be useful if you
-   * want to extend the game.
+   * Currently unused; kept for possible extensions of the game.
    * </p>
    */
   @SuppressWarnings("unused")
@@ -520,9 +511,8 @@ class SpampedeModel {
   /* -------------------------------------- */
 
   /*
-   * NOTE: These methods should really be private. We make them public to allow
-   * access by our unit tests, but the methods should not be called from
-   * SpampedeController or SpampedeView.
+   * NOTE: The neighbor methods below are visible for testing; they are not
+   * intended for use by the controller or view.
    */
 
 
@@ -795,9 +785,9 @@ class SpampedeModel {
 }
   
 
-  /* --------------------------------------------------------------------- */
-  /* Testing infrastructure - You do not need to understand these methods! */
-  /* --------------------------------------------------------------------- */
+  /* ---------------------- */
+  /* Testing infrastructure */
+  /* ---------------------- */
 
   // Pictures of test boards at http://tinyurl.com/spampedeTestBoards
 

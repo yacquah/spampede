@@ -74,7 +74,7 @@ class SpampedeView {
     this.width = width;
 
     // Initialize the frame
-    this.frame = new JFrame("Spampede Game"); // TODO HW #10.1A Update title
+    this.frame = new JFrame("Spampede");
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.frame.setLayout(new BorderLayout());
 
@@ -84,7 +84,6 @@ class SpampedeView {
     this.initializeImage();
 
     // Set up the (off-screen) buffer for drawing, named image
-    // image = createImage(Preferences.GAMEBOARDWIDTH, Preferences.GAMEBOARDHEIGHT);
     this.image = new BufferedImage(Preferences.BOARD_WIDTH, Preferences.BOARD_HEIGHT, BufferedImage.TYPE_INT_RGB);
     this.screen = this.image.getGraphics(); // screen holds the drawing routines
     this.panel = new SpampedeImagePanel(this.image);
@@ -186,25 +185,12 @@ class SpampedeView {
    * Re-draws the board, spam, and snake (but not the buttons).
    */
   public void updateGraphics() {
-    // Draw the background -- DO NOT REMOVE!
+    // Draw the background
     this.clear();
 
     // Draw the title
     this.displayTitle();
 
-    // Draw 5 squares of increasing size
-    // this.screen.setColor(Color.BLUE);
-
-    // int xPos = 20;
-    // int yPos = 100;
-    // int numSquares = 5;
-
-    // for (int i = 0; i <= numSquares; i++) {
-    // this.screen.fillRect(xPos, yPos, 5 * i, 5 * i);
-    // xPos += 10 * i;
-    // }
-
-    
     // Draw the board
     final int numRows = this.model.getNumRows();
     final int numCols = this.model.getNumColumns();
@@ -255,7 +241,7 @@ class SpampedeView {
   }
 
   /**
-   * Draws the background. DO NOT MODIFY!
+   * Draws the background.
    */
   private void clear() {
     this.screen.setColor(Preferences.COLOR_BACKGROUND);

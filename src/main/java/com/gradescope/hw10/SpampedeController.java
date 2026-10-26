@@ -40,7 +40,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
 
   /* --------------------------------------------------------------- */
   /* Fields and methods are used to implement the Runnable interface */
-  /* and to support pausing and resuming the applet. */
+  /* and to support pausing and resuming the game. */
   /* --------------------------------------------------------------- */
 
   /** The thread controlling the updates. */
@@ -159,7 +159,7 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
   }
 
   /**
-   * Called to run this applet.
+   * Runs the game loop on the game thread.
    *
    * <p>
    * Each cycle runs while holding this controller's lock, the same lock taken by
@@ -298,28 +298,6 @@ public class SpampedeController extends JPanel implements ActionListener, KeyLis
       }
     }
   }
-
-  /* ---------------------- */
-  /* Testing Infrastructure */
-  /* ---------------------- */
-
-  // public static SpampedeController getTestGame(TestGame gameNum) {
-  //   SpampedeController brain = new SpampedeController();
-  //   brain.model = new SpampedeModel(gameNum);
-  //   return brain;
-  // }
-
-  // public String testingToStringParent() {
-  //   return this.model.toStringParents();
-  // }
-
-  // public BoardCell testingGetNextCellInDir() {
-  //   return this.model.getNextCellInDir();
-  // }
-
-  // public String testingToStringSpampedeModel() {
-  //   return this.model.toString();
-  // }
 
   /* ---------------------- */
   /* Main */

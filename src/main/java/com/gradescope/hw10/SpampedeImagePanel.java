@@ -8,9 +8,7 @@ import javax.swing.JPanel;
 
 /**
  * Implements low-level graphics work.
- * 
- * DO NOT MODIFY.
- * 
+ *
  * @author HMC CS 60 Instructors
  * @version Fall 2025
  */
