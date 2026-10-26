@@ -252,14 +252,14 @@ class SpampedeModel {
    */
   public void moveSnakeForward(BoardCell cell) {
     // Remember whether this cell contained spam before we move into it
-    boolean wasSpam =cell.isSpam();
+    boolean wasSpam = cell.isSpam();
 
-    this.updateHead(cell);    //move head into new cell
+    this.updateHead(cell); // move head into new cell
 
-    //if new head cell is not spam, remove tail, snake does not grow
+    // if new head cell is not spam, remove tail, snake does not grow
     // otherwise, we do not remove tail, so the snake grows
-    if (!wasSpam){
-        this.removeTail();
+    if (!wasSpam) {
+      this.removeTail();
     }
   }
 
@@ -511,7 +511,7 @@ class SpampedeModel {
   protected BoardCell getNorthNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
-    return this.getCell(row-1, col);
+    return this.getCell(row - 1, col);
   }
 
   /**
@@ -523,7 +523,7 @@ class SpampedeModel {
   protected BoardCell getSouthNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
-    return this.getCell(row+1, col);
+    return this.getCell(row + 1, col);
   }
 
   /**
@@ -535,7 +535,7 @@ class SpampedeModel {
   protected BoardCell getEastNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
-    return getCell(row, col +1);
+    return this.getCell(row, col + 1);
   }
 
   /**
@@ -547,7 +547,7 @@ class SpampedeModel {
   protected BoardCell getWestNeighbor(BoardCell cell) {
     int row = cell.getRow();
     int col = cell.getColumn();
-    return getCell(row, col-1);
+    return this.getCell(row, col - 1);
   }
 
   /**
@@ -559,18 +559,18 @@ class SpampedeModel {
    *         current direction of travel
    */
   protected BoardCell getNextCellInDir() {
-    switch (this.currentMode){
-        case GOING_NORTH:
-            return this.getNorthNeighbor();
-        case GOING_SOUTH:
-            return this.getSouthNeighbor();
-        case GOING_EAST:
-            return this.getEastNeighbor();
-        case GOING_WEST:
-            return this.getWestNeighbor();
-        default:
-            // Should never happen (AI mode uses BFS), but for safety return the head
-            return this.getSnakeHead();
+    switch (this.currentMode) {
+    case GOING_NORTH:
+      return this.getNorthNeighbor();
+    case GOING_SOUTH:
+      return this.getSouthNeighbor();
+    case GOING_EAST:
+      return this.getEastNeighbor();
+    case GOING_WEST:
+      return this.getWestNeighbor();
+    default:
+      // Should never happen (AI mode uses BFS), but for safety return the head
+      return this.getSnakeHead();
     }
   }
 
@@ -646,21 +646,20 @@ class SpampedeModel {
    * computed from the new head and the cell right behind it.
    */
   public void reverseSnake() {
-    
     // Snake must be long enough to reverse
-    if (this.snakeCells.size() < 2){
-        return;
+    if (this.snakeCells.size() < 2) {
+      return;
     }
-    
+
     // reverse the linkedlist of Cells
     Collections.reverse(this.snakeCells);
 
     // Update all cell types
-    for (BoardCell cell : this.snakeCells){
-        cell.becomeBody();
+    for (BoardCell cell : this.snakeCells) {
+      cell.becomeBody();
     }
-    BoardCell newHead = this.snakeCells.getLast();   // head is last
-    BoardCell newBody = this.snakeCells.get(this.snakeCells.size()-2);
+    BoardCell newHead = this.snakeCells.getLast(); // head is last
+    BoardCell newBody = this.snakeCells.get(this.snakeCells.size() - 2);
 
     newHead.becomeHead();
 
@@ -673,14 +672,14 @@ class SpampedeModel {
     int dirRow = headRow - bodyRow;
     int dirColumn = headColumn - bodyColumn;
 
-    if (dirRow == -1 && dirColumn == 0){
-        this.currentMode = SnakeMode.GOING_NORTH;
-    } else if (dirRow== 1 && dirColumn == 0){
-        this.currentMode =SnakeMode.GOING_SOUTH;
-    } else if (dirRow == 0 && dirColumn == 1){
-        this.currentMode =SnakeMode.GOING_EAST;
-    } else if (dirRow == 0 && dirColumn == -1){
-        this.currentMode = SnakeMode.GOING_WEST;
+    if (dirRow == -1 && dirColumn == 0) {
+      this.currentMode = SnakeMode.GOING_NORTH;
+    } else if (dirRow == 1 && dirColumn == 0) {
+      this.currentMode = SnakeMode.GOING_SOUTH;
+    } else if (dirRow == 0 && dirColumn == 1) {
+      this.currentMode = SnakeMode.GOING_EAST;
+    } else if (dirRow == 0 && dirColumn == -1) {
+      this.currentMode = SnakeMode.GOING_WEST;
     }
   }
 
@@ -720,30 +719,29 @@ class SpampedeModel {
 
     // BFS search loop
     while (!cellsToSearch.isEmpty()) {
-        BoardCell current = cellsToSearch.remove();
+      BoardCell current = cellsToSearch.remove();
 
-        // If current cell is spam, trace back to find the next move
-        if (current.isSpam()) {
-            return getFirstCellInPath(current);
+      // If current cell is spam, trace back to find the next move
+      if (current.isSpam()) {
+        return this.getFirstCellInPath(current);
+      }
+
+      // Get neighbors in required order: North, South, East, West
+      BoardCell[] neighbors = this.getNeighbors(current);
+
+      for (BoardCell nbr : neighbors) {
+        // Skip walls and the snake (isOpen is true for empty and spam cells)
+        if (!nbr.isOpen()) {
+          continue;
         }
 
-        // Get neighbors in required order: North, South, East, West
-        BoardCell[] neighbors = this.getNeighbors(current);
-
-        for (BoardCell nbr : neighbors) {
-
-            // Skip walls and the snake (isOpen is true for empty and spam cells)
-            if (!nbr.isOpen()) {
-                continue;
-            }
-
-            // Only add if not already in queue
-            if (!nbr.alreadySearched()) {
-                nbr.addToSearch();
-                nbr.setParent(current);
-                cellsToSearch.add(nbr);
-            }
+        // Only add if not already in queue
+        if (!nbr.alreadySearched()) {
+          nbr.addToSearch();
+          nbr.setParent(current);
+          cellsToSearch.add(nbr);
         }
+      }
     }
 
     // if the search fails, just move somewhere
@@ -766,12 +764,11 @@ class SpampedeModel {
 
     // Walk back until the parent is the head (a cell with no parent is returned as is)
     while (current.getParent() != null && !current.getParent().isHead()) {
-        current = current.getParent();
+      current = current.getParent();
     }
 
     return current; // This is the neighbor to move into
-}
-  
+  }
 
   /* ---------------------- */
   /* Testing infrastructure */
