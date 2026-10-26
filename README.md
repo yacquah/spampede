@@ -8,7 +8,7 @@ A Snake-style arcade game in Java Swing, with an AI autopilot that uses breadth-
 
 You steer a snake around a walled 50 × 30 grid. Spam appears at random, each piece you eat makes the snake one cell longer, and hitting a wall or your own body ends the game. Press `a` and the game plays itself, finding the shortest route to the nearest spam before every move.
 
-**Built with:** Java · Swing / Java2D · JUnit. There are no dependencies beyond the JDK; JUnit is bundled in `lib/` for the tests.
+**Built with:** Java · Swing / Java2D · JUnit 5. There are no dependencies beyond the JDK; JUnit is bundled in `lib/` for the tests.
 
 ## Features
 
